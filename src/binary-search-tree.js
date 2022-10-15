@@ -1,19 +1,12 @@
 const { NotImplementedError } = require('../extensions/index.js');
 
-// const { Node } = require('../extensions/list-tree.js');
+const { Node } = require('../extensions/list-tree.js');
 
 /**
 * Implement simple binary search tree according to task description
 * using Node from extensions
 */
 
-class Node {
-  constructor(itemdata) {
-    this.data = itemdata;
-    this.left = null;
-    this.right = null;
-  }
-}
 
 class BinarySearchTree {
 
@@ -61,7 +54,6 @@ class BinarySearchTree {
   }
 
   has(data) {
-    console.log(this.start);
     if(this.start === null) return false;
     this.hasItem(this.start, data);
     return this.hasIt;
@@ -119,21 +111,41 @@ class BinarySearchTree {
     }
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  remove(data, item = this.start) {
+    if (item.data > data) {
+      item.left = this.remove(data, item.left);
+    } else if (item.data < data) {
+      item.right = this.remove(data, item.right);
+    } else {
+      if (item.left === null && item.right === null) {
+
+        item = null;
+      } else if (item.left === null) {
+        item = item.right;
+      } else if (item.right === null) {
+        item = item.left;
+      } else {
+        let prevNode = item.left;
+        while (prevNode.right) {
+          prevNode = prevNode.right;
+        }
+        item.data = prevNode.data;
+        item.left = this.remove(prevNode.data, item.left);
+      }
+    }
+    return item;
   }
 
   min() {
     if(this.start === null) return null;
-    console.log('5we ' + this.minItem(this.start));
+    // console.log('5we ' + this.minItem(this.start));
     this.minItem(this.start);
     return this.minim
   }
 
   minItem(item) {
     if (item.left === null) {
-      console.log(item.data);
+      // console.log(item.data);
       this.minim = item.data;
       return item.data
     }
@@ -154,17 +166,6 @@ class BinarySearchTree {
     this.maxItem(item.right);
   }
 }
-
-const tree = new BinarySearchTree();
-tree.add(2);
-tree.add(7);
-tree.add(1);
-tree.add(8);
-tree.add(4);
-tree.add(32);
-tree.add(12);
-tree.add(14);
-console.log(tree.find(8).data);
 
 module.exports = {
   BinarySearchTree
