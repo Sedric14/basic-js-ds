@@ -15,21 +15,61 @@ const { ListNode } = require('../extensions/list-node.js');
  */
 class Queue {
 
-  getUnderlyingList() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(){
+    this.enter = null;
   }
 
-  enqueue(/* value */) {
-    throw new NotImplementedError('Not implemented');
+  getUnderlyingList() {
+    // throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
+    this.reverse()
+    return this.enter
+  }
+
+  enqueue(value) {
+    // throw new NotImplementedError('Not implemented');
+    // remove line with error and write your code here
+    const node = new ListNode(value)
+    if(this.root === null) this.enter = node
+    node.next = this.enter;
+    this.enter = node;
   }
 
   dequeue() {
-    throw new NotImplementedError('Not implemented');
+    // throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
+    let a;
+    if(this.enter.next === null){
+      a = this.enter.value;
+      this.enter = null;
+      return a;
+    }else{
+      let node = this.enter;
+      while(node.next.next !== null){
+        node = node.next;
+      }
+      a = node.next.value;
+      node.next = null;
+      return a;
+    }
   }
+
+  reverse(){
+  let currNode = this.enter;
+  let prevNode = null;
+  let nextNode = null;
+  while (currNode) {
+    nextNode = currNode.next;
+    currNode.next = prevNode;
+    prevNode = currNode;
+    currNode = nextNode;
+  }
+  this.enter = prevNode;
+  return this
 }
+}
+
+
 
 module.exports = {
   Queue
